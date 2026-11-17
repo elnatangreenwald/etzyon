@@ -1,0 +1,19 @@
+{
+	admin off
+}
+
+:{$PORT:8080} {
+	root * /srv
+	encode gzip
+	header /assets/* Cache-Control "public, max-age=604800"
+	header {
+		-Server
+	}
+	@internal path /Caddyfile /Dockerfile /.dockerignore
+	respond @internal 404
+	try_files {path} {path}.html
+	file_server
+	handle_errors {
+		redir * / 302
+	}
+}
