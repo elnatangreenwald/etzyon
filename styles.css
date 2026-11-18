@@ -665,3 +665,22 @@ a.aud:hover{transform:translateY(-4px);border-color:rgba(192,151,105,.5)}
 .moments figure{margin:0;border-radius:16px;overflow:hidden;aspect-ratio:4/3;box-shadow:var(--shadow-sm);background:var(--navy-100)}
 .moments img{width:100%;height:100%;object-fit:cover}
 @media (max-width:640px){.moments__grid{grid-template-columns:1fr}}
+
+.service__tags-more{background:transparent !important;border-color:rgba(211,178,140,.5) !important;color:var(--gold-400) !important;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.portrait img{object-position:50% 0}
+
+/* WhatsApp nudge (mobile) */
+.wa-nudge{position:fixed;left:16px;bottom:84px;z-index:91;max-width:min(300px,calc(100vw - 32px));display:flex;align-items:flex-start;gap:10px;padding:14px 14px 14px 12px;border-radius:18px 18px 18px 6px;background:#fff;color:var(--ink);box-shadow:0 18px 40px -12px rgba(18,19,46,.45);opacity:0;transform:translateY(12px) scale(.96);transform-origin:bottom left;pointer-events:none;transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.wa-nudge.is-open{opacity:1;transform:none;pointer-events:auto}
+.wa-nudge__body{display:flex;flex-direction:column;gap:2px;font-size:14.5px;line-height:1.45;color:var(--ink-2)}
+.wa-nudge__body strong{font-size:15.5px;color:var(--navy-900)}
+.wa-nudge__cta{margin-top:8px;align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;background:#1FA855;color:#fff;font-weight:600;font-size:14.5px}
+.wa-nudge__cta svg{width:18px;height:18px;fill:currentColor;stroke:none}
+.wa-nudge__close{flex-shrink:0;width:28px;height:28px;border:0;border-radius:50%;background:var(--cream);color:var(--ink-3);font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center}
+@media (min-width:769px){.wa-nudge{display:none}}
+
+@media (max-width:640px){
+  .hero__visual{display:flex;flex-direction:column;align-items:center}
+  .float-card,.float-card--top,.float-card--bottom{position:static;animation:none;margin-top:14px;width:100%;max-width:none;inset:auto}
+  .float-card--top{margin-top:26px}
+}

@@ -215,4 +215,45 @@
   }));
 
   const y = $('#year'); if (y) y.textContent = new Date().getFullYear();
+
+  /* ---------- WhatsApp nudge (mobile, after scrolling): at 20s, then 60s later ---------- */
+  (function waNudge() {
+    if (!window.matchMedia || !matchMedia('(max-width:768px)').matches) return;
+    const KEY = 'waNudgeShown', MAX = 2;
+    const store = {
+      get() { try { return +sessionStorage.getItem(KEY) || 0; } catch (e) { return 0; } },
+      set(v) { try { sessionStorage.setItem(KEY, String(v)); } catch (e) {} }
+    };
+    if (store.get() >= MAX) return;
+
+    const wa = 'https://api.whatsapp.com/send?phone=972523114394&text=' +
+      encodeURIComponent('היי יעקב, אשמח לשמוע פרטים על ייעוץ משכנתא');
+    const el = document.createElement('div');
+    el.className = 'wa-nudge'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'שיחה בוואטסאפ');
+    el.innerHTML =
+      '<div class="wa-nudge__body"><strong>יש לכם שאלה על משכנתא?</strong>' +
+      '<span>דברו איתי ישירות בוואטסאפ, אני עונה אישית.</span>' +
+      '<a class="wa-nudge__cta" href="' + wa + '" target="_blank" rel="noopener">' +
+      '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3z"/></svg>שלחו הודעה</a></div>' +
+      '<button type="button" class="wa-nudge__close" aria-label="סגירה">×</button>';
+    document.body.appendChild(el);
+
+    let scrolled = window.scrollY > 200, pending = false, hideT, done = false;
+    const hide = () => { el.classList.remove('is-open'); clearTimeout(hideT); };
+    const show = () => {
+      if (done) return;
+      if (!scrolled) { pending = true; return; }   // only for visitors who scroll
+      pending = false;
+      const n = store.get() + 1; store.set(n);
+      el.classList.add('is-open');
+      hideT = setTimeout(hide, 12000);
+      if (n < MAX) setTimeout(show, 12000 + 60000);   // next one 60s after this one ends
+    };
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 200) { scrolled = true; if (pending) show(); }
+    }, { passive: true });
+    el.querySelector('.wa-nudge__close').addEventListener('click', hide);
+    el.querySelector('.wa-nudge__cta').addEventListener('click', () => { done = true; store.set(MAX); hide(); });
+    setTimeout(show, 20000);
+  })();
 })();
