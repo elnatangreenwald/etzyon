@@ -704,3 +704,43 @@ a.aud:hover{transform:translateY(-4px);border-color:rgba(192,151,105,.5)}
 .lightbox.is-open{opacity:1;pointer-events:auto}
 .lightbox img{max-width:min(1000px,100%);max-height:calc(100vh - 80px);width:auto;height:auto;border-radius:10px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);background:#fff}
 .lightbox__close{position:absolute;top:16px;left:16px;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-size:26px;line-height:1;cursor:pointer}
+
+/* ---------- Footer legal links ---------- */
+.footer__legal{display:flex;gap:18px;flex-wrap:wrap}
+.footer__legal a{text-decoration:underline;text-decoration-color:rgba(255,255,255,.25);text-underline-offset:3px}
+.footer__legal a:hover{color:var(--gold-400)}
+.legal h2{font-size:clamp(22px,2.2vw,27px)}
+
+/* ---------- Accessibility menu ---------- */
+.a11y{position:fixed;right:22px;bottom:22px;z-index:95;font-size:16px;line-height:1.4}
+.a11y__btn{width:56px;height:56px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;background:#1B5FD1;color:#fff;box-shadow:0 12px 26px -8px rgba(27,95,209,.65);transition:transform .2s}
+.a11y__btn:hover{transform:scale(1.07)}
+.a11y__btn svg{width:30px;height:30px;stroke-width:2.2}
+.a11y__btn circle{fill:currentColor;stroke:none}
+.a11y__panel{position:absolute;right:0;bottom:68px;width:min(320px,calc(100vw - 32px));max-height:calc(100vh - 110px);overflow:auto;padding:16px;border-radius:20px;background:#fff;color:#17183A;box-shadow:0 24px 50px -16px rgba(18,19,46,.5);border:1px solid #E5E3DE}
+.a11y__head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.a11y__head strong{font-size:18px}
+.a11y__x{width:32px;height:32px;border-radius:50%;border:0;background:#F1F0EC;font-size:20px;cursor:pointer;color:#17183A}
+.a11y__size{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;background:#F6F5F1;margin-bottom:10px}
+.a11y__size span{flex:1;font-weight:600}
+.a11y__size button{width:40px;height:36px;border-radius:10px;border:1px solid #D8D6CF;background:#fff;font:inherit;font-weight:700;cursor:pointer;color:#17183A}
+.a11y__size output{min-width:46px;text-align:center;font-weight:700}
+.a11y__grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.a11y__opt{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;border-radius:14px;border:1.5px solid #E5E3DE;background:#fff;font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;color:#17183A;text-align:center}
+.a11y__opt svg{width:24px;height:24px;color:#1B5FD1}
+.a11y__opt[aria-pressed="true"]{border-color:#1B5FD1;background:#EAF1FD}
+.a11y__reset{width:100%;margin-top:10px;padding:11px;border-radius:12px;border:0;background:#17183A;color:#fff;font:inherit;font-weight:600;cursor:pointer}
+.a11y__stmt{display:block;margin-top:10px;text-align:center;font-weight:600;color:#1B5FD1;text-decoration:underline}
+.a11y button:focus-visible,.a11y a:focus-visible{outline:3px solid #F2B705;outline-offset:2px}
+@media (max-width:640px){.a11y{right:16px;bottom:16px}.a11y__btn{width:52px;height:52px}}
+
+/* accessibility modes */
+html.a11y-zoom main,html.a11y-zoom .footer{zoom:var(--a11y-zoom)}
+html.a11y-contrast main,html.a11y-contrast .footer,html.a11y-contrast .header{filter:contrast(1.35) saturate(1.1)}
+html.a11y-gray main,html.a11y-gray .footer,html.a11y-gray .header{filter:grayscale(1)}
+html.a11y-contrast.a11y-gray main,html.a11y-contrast.a11y-gray .footer,html.a11y-contrast.a11y-gray .header{filter:grayscale(1) contrast(1.35)}
+html.a11y-links a:not(.btn):not(.a11y__stmt){text-decoration:underline !important;text-decoration-thickness:2px !important;text-underline-offset:3px}
+html.a11y-links a:not(.a11y a){outline:2px dashed #F2B705;outline-offset:2px}
+html.a11y-font body,html.a11y-font input,html.a11y-font button,html.a11y-font textarea{font-family:Arial,"Segoe UI",sans-serif !important;letter-spacing:.02em;word-spacing:.08em}
+html.a11y-still *,html.a11y-still *::before,html.a11y-still *::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+html.a11y-still .reveal{opacity:1 !important;transform:none !important}

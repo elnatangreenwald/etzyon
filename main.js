@@ -132,7 +132,7 @@
   /* Lead forms — validate, then email the lead via FormSubmit (https://formsubmit.co).
      The first submission sends an activation email to LEAD_EMAIL; leads arrive only after it is confirmed.
      If sending fails, the visitor is offered WhatsApp with the same details instead. */
-  const LEAD_EMAIL = 'ygtr1013@gmail.com';
+  const LEAD_EMAIL = 'yakov.etzyon@gmail.com';
   const LEAD_ENDPOINT = `https://formsubmit.co/ajax/${LEAD_EMAIL}`;
   const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
   const telOk = v => v.replace(/\D/g, '').length >= 9;
@@ -215,6 +215,72 @@
   }));
 
   const y = $('#year'); if (y) y.textContent = new Date().getFullYear();
+
+  /* ---------- Accessibility menu (bottom-right) ---------- */
+  (function a11y() {
+    const KEY = 'a11yPrefs';
+    const root = document.documentElement;
+    const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } };
+    const save = p => { try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) {} };
+    let prefs = load();
+    const TOGGLES = [
+      ['contrast', 'ניגודיות גבוהה', '<circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>'],
+      ['gray', 'גווני אפור', '<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>'],
+      ['links', 'הדגשת קישורים', '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>'],
+      ['font', 'גופן קריא', '<path d="M4 20 10 4h4l6 16M7 14h10"/>'],
+      ['still', 'עצירת אנימציות', '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>'],
+    ];
+    const SIZES = [1, 1.1, 1.2, 1.3];
+    const apply = () => {
+      TOGGLES.forEach(([k]) => root.classList.toggle('a11y-' + k, !!prefs[k]));
+      const z = SIZES[prefs.size || 0];
+      root.style.setProperty('--a11y-zoom', z);
+      root.classList.toggle('a11y-zoom', z !== 1);
+    };
+    apply();
+
+    const stmt = (document.querySelector('a[href$="accessibility.html"]') || {}).getAttribute
+      ? document.querySelector('a[href$="accessibility.html"]').getAttribute('href') : 'accessibility.html';
+    const wrap = document.createElement('div');
+    wrap.className = 'a11y';
+    wrap.innerHTML =
+      '<button type="button" class="a11y__btn" aria-expanded="false" aria-controls="a11y-panel" aria-label="תפריט נגישות">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.5" r="2"/><path d="M5 8.5l7 1.5 7-1.5M12 10v4.5M12 14.5l-3.5 6.5M12 14.5l3.5 6.5"/></svg></button>' +
+      '<div class="a11y__panel" id="a11y-panel" role="dialog" aria-label="הגדרות נגישות" hidden>' +
+      '<div class="a11y__head"><strong>נגישות</strong><button type="button" class="a11y__x" aria-label="סגירת תפריט הנגישות">×</button></div>' +
+      '<div class="a11y__size" role="group" aria-label="גודל טקסט"><span>גודל טקסט</span>' +
+      '<button type="button" data-size="-1" aria-label="הקטנת טקסט">א-</button><output aria-live="polite"></output>' +
+      '<button type="button" data-size="1" aria-label="הגדלת טקסט">א+</button></div>' +
+      '<div class="a11y__grid">' + TOGGLES.map(([k, label, icon]) =>
+        `<button type="button" class="a11y__opt" data-k="${k}" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true">${icon}</svg>${label}</button>`).join('') +
+      '</div>' +
+      '<button type="button" class="a11y__reset">איפוס הגדרות</button>' +
+      `<a class="a11y__stmt" href="${stmt}">הצהרת נגישות</a></div>`;
+    document.body.appendChild(wrap);
+
+    const btn = wrap.querySelector('.a11y__btn'), panel = wrap.querySelector('.a11y__panel');
+    const out = wrap.querySelector('output');
+    const sync = () => {
+      out.textContent = Math.round(SIZES[prefs.size || 0] * 100) + '%';
+      wrap.querySelectorAll('.a11y__opt').forEach(b => b.setAttribute('aria-pressed', !!prefs[b.dataset.k]));
+    };
+    const setOpen = open => {
+      panel.hidden = !open; btn.setAttribute('aria-expanded', open);
+      if (open) { sync(); panel.querySelector('button').focus(); }
+    };
+    btn.addEventListener('click', () => setOpen(panel.hidden));
+    wrap.querySelector('.a11y__x').addEventListener('click', () => { setOpen(false); btn.focus(); });
+    wrap.querySelectorAll('[data-size]').forEach(b => b.addEventListener('click', () => {
+      prefs.size = Math.max(0, Math.min(SIZES.length - 1, (prefs.size || 0) + +b.dataset.size));
+      save(prefs); apply(); sync();
+    }));
+    wrap.querySelectorAll('.a11y__opt').forEach(b => b.addEventListener('click', () => {
+      prefs[b.dataset.k] = !prefs[b.dataset.k]; save(prefs); apply(); sync();
+    }));
+    wrap.querySelector('.a11y__reset').addEventListener('click', () => { prefs = {}; save(prefs); apply(); sync(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) { setOpen(false); btn.focus(); } });
+    document.addEventListener('click', e => { if (!panel.hidden && !wrap.contains(e.target)) setOpen(false); });
+  })();
 
   /* ---------- Lightbox for certificates ---------- */
   (function lightbox() {
