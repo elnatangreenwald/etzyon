@@ -684,3 +684,23 @@ a.aud:hover{transform:translateY(-4px);border-color:rgba(192,151,105,.5)}
   .float-card,.float-card--top,.float-card--bottom{position:static;animation:none;margin-top:14px;width:100%;max-width:none;inset:auto}
   .float-card--top{margin-top:26px}
 }
+
+/* certificates */
+.certs{margin-top:20px}
+.certs--top{margin:0 0 44px}
+.certs__eyebrow{display:inline-block;font-size:13.5px;font-weight:700;letter-spacing:.04em;color:var(--gold-600);margin-bottom:10px}
+.cert{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:28px;align-items:center;padding:22px;border-radius:var(--radius);background:linear-gradient(135deg,#fff,var(--cream));border:1px solid rgba(192,151,105,.35);box-shadow:var(--shadow-sm)}
+.cert__img{position:relative;display:block;border-radius:12px;overflow:hidden;box-shadow:0 14px 30px -14px rgba(18,19,46,.45);background:#fff;padding:8px;border:1px solid var(--line);transition:transform .3s var(--ease)}
+.cert__img img{display:block;width:100%;height:auto;border-radius:6px}
+.cert__img:hover{transform:translateY(-3px) rotate(-.6deg)}
+.cert__zoom{position:absolute;bottom:14px;left:14px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(18,19,46,.75);color:#fff;font-size:18px}
+.cert__body h3{font-size:clamp(19px,2vw,23px);font-weight:800;color:var(--navy-900);line-height:1.35}
+.cert__body ul{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.cert__body li{position:relative;padding-inline-start:22px;color:var(--ink-2);font-size:16px;line-height:1.5}
+.cert__body li::before{content:"";position:absolute;inset-inline-start:0;top:.55em;width:9px;height:9px;border-radius:50%;background:var(--gold-500)}
+@media (max-width:640px){.cert{grid-template-columns:1fr;gap:18px;padding:18px}.cert__img{max-width:320px;margin-inline:auto;width:100%}}
+
+.lightbox{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:24px;background:rgba(12,13,32,.88);opacity:0;pointer-events:none;transition:opacity .25s}
+.lightbox.is-open{opacity:1;pointer-events:auto}
+.lightbox img{max-width:min(1000px,100%);max-height:calc(100vh - 80px);width:auto;height:auto;border-radius:10px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);background:#fff}
+.lightbox__close{position:absolute;top:16px;left:16px;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-size:26px;line-height:1;cursor:pointer}

@@ -216,6 +216,26 @@
 
   const y = $('#year'); if (y) y.textContent = new Date().getFullYear();
 
+  /* ---------- Lightbox for certificates ---------- */
+  (function lightbox() {
+    const links = document.querySelectorAll('.js-zoom');
+    if (!links.length) return;
+    const box = document.createElement('div');
+    box.className = 'lightbox'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', 'תצוגת תעודה');
+    box.innerHTML = '<button type="button" class="lightbox__close" aria-label="סגירה">×</button><img alt="">';
+    document.body.appendChild(box);
+    const img = box.querySelector('img'), btn = box.querySelector('.lightbox__close');
+    let last = null;
+    const close = () => { box.classList.remove('is-open'); document.body.style.overflow = ''; if (last) last.focus(); };
+    links.forEach(a => a.addEventListener('click', e => {
+      e.preventDefault(); last = a;
+      img.src = a.getAttribute('href'); img.alt = (a.querySelector('img') || {}).alt || '';
+      box.classList.add('is-open'); document.body.style.overflow = 'hidden'; btn.focus();
+    }));
+    box.addEventListener('click', e => { if (e.target !== img) close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && box.classList.contains('is-open')) close(); });
+  })();
+
   /* ---------- WhatsApp nudge (mobile, after scrolling): at 20s, then 60s later ---------- */
   (function waNudge() {
     if (!window.matchMedia || !matchMedia('(max-width:768px)').matches) return;
